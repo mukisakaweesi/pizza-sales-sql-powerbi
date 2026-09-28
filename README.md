@@ -1,138 +1,106 @@
-# 🍕 Pizza Sales Analysis Dashboard
+# Pizza Sales Analysis with SQL and Power BI
 
-### 🔍 Project Description
+**I analysed a year of pizza orders (2015) with SQL Server and built a Power BI dashboard: $817.9K revenue from 21K orders and 50K pizzas, with large pizzas making up 45.9% of sales.**
 
-This project explores and analyzes a year's worth of pizza sales data using **SQL** for analysis and **Power BI** for visualization. The goal is to uncover trends in revenue, order frequency, product performance, and customer preferences. The final dashboard delivers clear insights into sales performance by category, size, time, and day of the week — empowering business decision-makers in the food and beverage space.
+SQL Server (T-SQL) · Power BI Desktop · Excel | May 2025
 
----
+![Pizza sales dashboard, page 1](images/dashboard-1.png)
 
-## 📚 Table of Contents
-1. [Project Overview](#1-project-overview)  
-2. [Data Sources](#2-data-sources)  
-3. [Tools Used](#3-tools-used)  
-4. [Data Cleaning and Preparation](#4-data-cleaning-and-preparation)  
-5. [Exploratory Data Analysis (EDA)](#5-exploratory-data-analysis-eda)  
-6. [Data Analysis](#6-data-analysis)  
-7. [Results & Findings](#7-results--findings)  
-8. [Recommendations](#8-recommendations)  
-9. [Limitations](#9-limitations)  
-10. [References](#10-references)
+## Contents
 
----
+1. [Overview](#overview)
+2. [Data](#data)
+3. [Tools](#tools)
+4. [Data preparation](#data-preparation)
+5. [Analysis](#analysis)
+6. [Results](#results)
+7. [Recommendations](#recommendations)
+8. [Limitations](#limitations)
+9. [How to open the files](#how-to-open-the-files)
+10. [References](#references)
 
-## 1. Project Overview
+## Overview
 
-The purpose of this project is to analyze sales performance for a pizza restaurant, with the aim of identifying best-selling products, busiest sales periods, and customer purchasing behavior. The insights are visualized in a Power BI dashboard to help managers make data-driven decisions to boost revenue and streamline operations.
+I wanted to find the best and worst selling pizzas, the busiest days and months, and how revenue splits across pizza categories and sizes. The results are in a two page Power BI dashboard that a restaurant manager could use to plan stock, staffing and promotions.
 
----
+## Data
 
-## 2. Data Sources
+- **Table:** `pizza_sales`, one row per pizza line in an order
+- **Period:** January to December 2015
+- **Key columns:** `order_id`, `order_date`, `pizza_name`, `pizza_size`, `pizza_category`, `quantity`, `total_price`
+- The raw CSV is not included in this repository.
 
-- **Dataset**: `pizza_sales.csv`  
-- Data covers all pizza orders from **January to December 2015**
-- Key columns: `order_id`, `order_date`, `pizza_name`, `pizza_size`, `pizza_category`, `quantity`, `total_price`
+## Tools
 
----
+- **SQL Server (T-SQL)** for the KPI and trend queries in [queries.sql](queries.sql)
+- **Power BI Desktop** for the dashboard ([Pizza sales.pbix](Pizza%20sales.pbix), PDF export in [Pizza sales.pdf](Pizza%20sales.pdf))
+- **Excel** for checking the CSV structure and formats
 
-## 3. Tools Used
+## Data preparation
 
-- **MySQL** – Data querying and analysis  
-- **Power BI Desktop** – Interactive data visualization  
-- **Microsoft Excel** – Data formatting and CSV structure validation  
+- Removed duplicate rows and made sure data types were consistent (dates, numeric totals)
+- Standardised pizza category and size names
+- Checked for null or invalid entries, such as missing prices or sizes
+- Added month and day name fields for trend analysis
 
----
+## Analysis
 
-## 4. Data Cleaning and Preparation
+All queries are in [queries.sql](queries.sql). They cover:
 
-- Removed duplicate rows and ensured data types were consistent (e.g., date fields, numeric totals)  
-- Standardized pizza category and size naming conventions  
-- Checked for and handled null or invalid entries (e.g., missing prices or sizes)  
-- Created new fields for:
-  - Month and day name for trend analysis
-  - Revenue metrics
-  - Aggregated quantities and totals by category and size
+- **KPIs:** total revenue, total orders, total pizzas sold, average order value and average pizzas per order
+- **Trends:** orders by day of the week and by month
+- **Mix:** percentage of sales by pizza category and by pizza size, and pizzas sold by category
+- **Best and worst sellers:** top 5 and bottom 5 pizzas by revenue, quantity and number of orders
 
----
+Example, total revenue:
 
-## 5. Exploratory Data Analysis (EDA)
-
-Using **MySQL**, the following metrics were computed:
-
-- **Total Revenue**  
 ```sql
-SELECT SUM(total_price) AS Total_Revenue FROM pizza_sales;
+SELECT SUM(total_price) AS Total_Revenue
+FROM pizza_sales;
 ```
-## 6. Data Analysis
-Using SQL and Power BI:
 
-Calculated KPIs: total revenue ($817.9K), total orders (21K), total pizzas sold (50K), average order value ($38.31), and average pizzas per order (2.32)
+## Results
 
-Tracked daily and monthly order trends to identify peak sales periods
+| KPI | Value |
+|---|---|
+| Total revenue | $817.9K |
+| Total orders | 21K |
+| Total pizzas sold | 50K |
+| Average order value | $38.31 |
+| Average pizzas per order | 2.32 |
 
-Analyzed percentage of sales by pizza category and size
+- **Days:** Friday had the most orders (3.5K), followed by Thursday and Saturday (3.2K each). Sunday had the fewest (2.6K).
+- **Months:** July (1,935 orders) and January (1,845) were the busiest months. September and October were the quietest (1,661 and 1,646).
+- **Category:** Classic pizzas brought in the most sales and orders (15K pizzas sold). Supreme, Veggie and Chicken followed closely.
+- **Size:** Large pizzas made up 45.9% of sales, medium 30.5% and small 21.8%. XL and XXL sizes were rare.
 
-Identified top 5 and bottom 5 performers based on:
+![Pizza sales dashboard, page 2](images/dashboard-2.png)
 
-Revenue
+## Recommendations
 
-Quantity sold
+- Keep large pizzas well stocked and promoted, since they bring in the most sales.
+- Plan more staff for Thursday to Saturday, when orders peak.
+- Review the bottom 5 pizzas by revenue and orders and consider dropping or reworking them.
+- Use combo deals to raise the average order value above $38.
+- Use the quieter months (September and October) for promotions.
 
-Number of orders
+## Limitations
 
-Evaluated performance by pizza size and category using bar and pie charts
+- Only one year of data (2015), so I cannot look at long term trends.
+- No customer level data, so repeat buyers and customer segments cannot be analysed.
+- External factors such as weather, holidays and marketing campaigns are not in the data.
+- No data on toppings or customisation.
 
-Visualized key metrics using card visuals, line charts, and clustered columns
+## How to open the files
 
----
-## 7. Results & Findings
-Revenue: Total revenue generated was $817.9K
+- **Dashboard:** open `Pizza sales.pbix` in [Power BI Desktop](https://powerbi.microsoft.com/desktop/) (free, Windows). If you do not have Power BI, open `Pizza sales.pdf`.
+- **Queries:** run `queries.sql` in SQL Server Management Studio or Azure Data Studio against a `pizza_sales` table loaded from the CSV.
 
-Order Volume: 21K orders processed in 2015, totaling 50K pizzas
+## References
 
-Top Sales Days: Highest orders occurred on Fridays, Saturdays, and Sundays
+- [Power BI documentation](https://learn.microsoft.com/en-us/power-bi/)
+- [SQL Server T-SQL reference](https://learn.microsoft.com/en-us/sql/t-sql/language-reference)
 
-Top Months: Peak sales occurred between January and July
+## Contact
 
-Category Performance:
-
-Classic category had the highest contribution to revenue
-
-Chicken and Veggie categories closely followed
-
-Size Performance:
-
-Large (L) pizzas made up 45.9% of total sales
-
-Medium (M) and Small (S) sizes followed at 30.5% and 21.8% respectively
-
----
-
-## 8. Recommendations
-Stock & promote large-sized pizzas more aggressively due to higher demand
-
-Focus marketing efforts on the weekend, particularly Friday–Sunday
-
-Optimize menu based on the top 5 best sellers and consider phasing out the lowest performers
-
-Run seasonal promos from January to July to boost already strong months
-
-Consider offering combo deals or discounts to increase average order value above $38
-
----
-## 9. Limitations
-Data only includes one year (2015); long-term trends unavailable
-
-No customer-level data for deeper behavioral segmentation (e.g., repeat buyers)
-
-External factors such as weather, holidays, or marketing campaigns were not accounted for
-
-Pizza customization or toppings data not available
----
-
-##10. References
-Power BI Documentation
-
-MySQL Documentation
----
-
-Pizza Sales Dashboard Inspiration – SQLBI
+Kaweesi Abdulrahim Mukisa · mukisakaweesi@gmail.com · [LinkedIn](https://www.linkedin.com/in/kaweesi-abdulrahim-mukisa-919326252/) · [Portfolio](https://app.notion.com/p/1fcc3e1ef98f80e4bd57c2148954d746)
